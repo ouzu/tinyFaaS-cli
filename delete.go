@@ -11,7 +11,8 @@ import (
 )
 
 func deleteCommand(c *cli.Context) error {
-	res, err := http.Post(BASE_URL+"/delete", "text/plain", strings.NewReader(c.Args().First()))
+
+	res, err := http.Post(GetManagerUrl(c)+"/delete", "text/plain", strings.NewReader(c.Args().First()))
 	if err != nil {
 		return err
 	}

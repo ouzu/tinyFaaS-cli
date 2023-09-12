@@ -9,7 +9,7 @@ import (
 )
 
 func logsCommand(c *cli.Context) error {
-	res, err := http.Get(BASE_URL + "/logs")
+	res, err := http.Get(GetManagerUrl(c) + "/logs")
 	if err != nil {
 		return err
 	}

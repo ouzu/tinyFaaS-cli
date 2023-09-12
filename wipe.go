@@ -11,7 +11,7 @@ import (
 )
 
 func wipeCommand(c *cli.Context) error {
-	res, err := http.Post(BASE_URL+"/wipe", "text/plain", bytes.NewReader([]byte{}))
+	res, err := http.Post(GetManagerUrl(c)+"/wipe", "text/plain", bytes.NewReader([]byte{}))
 	if err != nil {
 		return err
 	}

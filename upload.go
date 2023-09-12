@@ -23,21 +23,23 @@ type uploadRequest struct {
 	Name    string `json:"name"`
 	Threads int    `json:"threads"`
 	Zip     string `json:"zip"`
+	Env     string `json:"env"`
 }
 
 func uploadCommand(c *cli.Context) error {
-	if c.Args().Len() != 3 {
-		return fmt.Errorf("Need exactly 3 arguments.")
+	if c.Args().Len() != 4 {
+		return fmt.Errorf("Need exactly 4 arguments: folder-name, name, env, and threads.")
 	}
 
 	dir := c.Args().Get(0)
 	name := c.Args().Get(1)
-	threads, err := strconv.Atoi(c.Args().Get(2))
+	env := c.Args().Get(2)
+	threads, _ := strconv.Atoi(c.Args().Get(3))
 
 	var zipBuffer bytes.Buffer
 	zipWriter := zip.NewWriter(bufio.NewWriter(&zipBuffer))
 
-	err = filepath.Walk(dir,
+	err := filepath.Walk(dir,
 		func(path string, info os.FileInfo, err error) error {
 			if err != nil {
 				return err
@@ -76,6 +78,7 @@ func uploadCommand(c *cli.Context) error {
 		Name:    name,
 		Threads: threads,
 		Zip:     base64.StdEncoding.EncodeToString(zipBuffer.Bytes()),
+		Env:     env,
 	}
 
 	j, err := json.Marshal(req)
@@ -83,7 +86,7 @@ func uploadCommand(c *cli.Context) error {
 		return err
 	}
 
-	res, err := http.Post(BASE_URL+"/upload", "text/plain", bytes.NewReader(j))
+	res, err := http.Post(GetManagerUrl(c)+"/upload", "text/plain", bytes.NewReader(j))
 	if err != nil {
 		return err
 	}

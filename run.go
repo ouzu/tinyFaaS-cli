@@ -11,7 +11,7 @@ import (
 func runCommand(c *cli.Context) error {
 	command := c.Args().First()
 
-	conn, err := coap.Dial("udp", "localhost:5683")
+	conn, err := coap.Dial("udp", GetCoapUrl(c))
 	if err != nil {
 		return err
 	}

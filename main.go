@@ -7,10 +7,6 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-var (
-	BASE_URL = "http://localhost:8080"
-)
-
 func main() {
 	app := &cli.App{
 		Name:  "tinyFaaS-cli",
@@ -55,6 +51,13 @@ func main() {
 				Usage:     "run a function",
 				Action:    runCommand,
 				ArgsUsage: "[function] [arguments...]",
+			},
+		},
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:      "config",
+				Usage:     "toml file to read configuration from",
+				TakesFile: true,
 			},
 		},
 		EnableBashCompletion: true,
