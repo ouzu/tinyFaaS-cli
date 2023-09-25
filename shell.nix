@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> { } }:
+{ pkgs }:
 with pkgs;
 mkShell {
   name = "tinyFaaS-cli-shell";
@@ -9,7 +9,6 @@ mkShell {
     nixfmt
 
     tcpdump
-    wireshark
   ];
 
   shellHook = ''
